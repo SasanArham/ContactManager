@@ -17,7 +17,7 @@ namespace WebApplication1
 
             builder.Services.AddDomainServices();
             builder.Services.AddInfrastructureServices(builder.Configuration);
-            builder.Services.AddRepositories();
+            builder.Services.AddRepositories(builder.Configuration);
             builder.Services.AddApplicationServices();
 
             builder.Services.ConfigCors();
