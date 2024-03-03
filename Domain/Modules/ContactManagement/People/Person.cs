@@ -28,6 +28,10 @@ namespace Domain.Modules.ContactManagement.People
             Gender = gender;
             LastName = lastName;
             NationalCode = nationlaCode;
+            AddDomainEvent(new PersonEditedEvent
+            {
+                ID = ID
+            });
         }
 
         public override void Delete()
