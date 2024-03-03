@@ -1,0 +1,40 @@
+using Infrastructure.Base;
+using Repository.Base;
+using Application.Base;
+using Domain.Base;
+using WebAPI.Base;
+
+namespace WebApplication1
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.ConfigControllers();
+            builder.Services.ConfigSwagger();
+
+            builder.Services.AddDomainServices();
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.AddRepositories();
+            builder.Services.AddApplicationServices();
+
+            builder.Services.ConfigCors();
+            builder.Services.AddHttpContextAccessor();
+
+
+            var app = builder.Build();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            app.UseHttpsRedirection();
+            app.UseCors("ClientPermission");
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+            app.Run();
+        }
+    }
+}
