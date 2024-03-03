@@ -1,7 +1,9 @@
 ﻿using Application.Base;
 using Application.Common;
+using Application.Modules.ContactManagement.People.Helpers;
 using Domain.Modules.ContactManagement.People;
 using Domain.Modules.ContactManagement.People.Services;
+using MediatR;
 
 namespace Repository.Modules.ContactManagement.People
 {
@@ -28,7 +30,7 @@ namespace Repository.Modules.ContactManagement.People
         public async Task<Person> GetByIDAsync(int ID)
         {
             Person? person;
-            string cachKey = $"person-{ID}";
+            string cachKey = PersonCacheKey.Person(ID);
             person = await _distributedCachProvider.GetAsync<Person>(cachKey);
             if (person is null)
             {

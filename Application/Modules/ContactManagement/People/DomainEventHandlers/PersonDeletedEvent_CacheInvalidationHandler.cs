@@ -1,4 +1,5 @@
 ﻿using Application.Common;
+using Application.Modules.ContactManagement.People.Helpers;
 using Domain.Modules.ContactManagement.People.Events;
 using MediatR;
 
@@ -14,7 +15,7 @@ namespace Application.Modules.ContactManagement.People.DomainEventHandlers
         }
         public async Task Handle(PersonDeletedEvent notification, CancellationToken cancellationToken)
         {
-            var cachkey = $"person-{notification.ID}";
+            var cachkey = PersonCacheKey.Person(notification.ID);
             await _distributedCachProvider.InvalidateAsync(cachkey, cancellationToken);
         }
     }
