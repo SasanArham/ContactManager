@@ -1,23 +1,22 @@
 ﻿using Application.Base;
+using Application.Common;
 using Domain.Modules.ContactManagement.People;
 using Domain.Modules.ContactManagement.People.Services;
-using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
 
 namespace Repository.Modules.ContactManagement.People
 {
     public class CachedPersonRepository : IPersonRepository
     {
         private readonly IPersonRepository _decorated;
-        private readonly IDistributedCache _distributedCache;
+        private readonly IDistributedCachProvider _distributedCachProvider;
         private readonly IDatabaseContext _dbContext;
 
         public CachedPersonRepository(IPersonRepository decorated
-            , IDistributedCache distributedCache
+            , IDistributedCachProvider distributedCachProvider
             , IDatabaseContext dbContext)
         {
             _decorated = decorated;
-            _distributedCache = distributedCache;
+            _distributedCachProvider = distributedCachProvider;
             _dbContext = dbContext;
         }
 
@@ -30,15 +29,14 @@ namespace Repository.Modules.ContactManagement.People
         {
             Person? person;
             string cachKey = $"person-{ID}";
-            string? cachedPerson = await _distributedCache.GetStringAsync(cachKey);
-            if (string.IsNullOrEmpty(cachedPerson))
+            person = await _distributedCachProvider.GetAsync<Person>(cachKey);
+            if (person is null)
             {
                 person = await _decorated.GetByIDAsync(ID);
-                await _distributedCache.SetStringAsync(cachKey, JsonConvert.SerializeObject(person));
+                await _distributedCachProvider.CachAsync<Person>(cachKey, person);
             }
             else
             {
-                person = JsonConvert.DeserializeObject<Person>(cachedPerson);
                 _dbContext.People.Attach(person!);
             }
             return person!;

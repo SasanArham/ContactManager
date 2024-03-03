@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Ardalis.GuardClauses;
+using Application.Common;
+using Infrastructure.Common;
 
 namespace Infrastructure.Base
 {
@@ -22,6 +24,15 @@ namespace Infrastructure.Base
                 });
             services.AddScoped<IDatabaseContext>(provider => provider.GetRequiredService<DatabaseContext>());
 
+            services.AddStackExchangeRedisCache(redisOptions =>
+            {
+                var connection = configuration.GetConnectionString("Redis");
+                Guard.Against.Null(connection, "connectionString", "Connection string 'Redis' not found.");
+                redisOptions.Configuration = connection;
+            });
+
+
+            services.AddScoped<IDistributedCachProvider, DistributedCachProvider>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
