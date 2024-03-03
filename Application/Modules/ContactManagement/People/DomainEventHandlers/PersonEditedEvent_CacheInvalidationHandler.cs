@@ -6,9 +6,9 @@ namespace Application.Modules.ContactManagement.People.DomainEventHandlers
 {
     public class PersonEditedEvent_CacheInvalidationHandler : INotificationHandler<PersonEditedEvent>
     {
-        private readonly IDistributedCachProvider _distributedCachProvider;
+        private readonly IDistributedCacheProvider _distributedCachProvider;
 
-        public PersonEditedEvent_CacheInvalidationHandler(IDistributedCachProvider distributedCachProvider)
+        public PersonEditedEvent_CacheInvalidationHandler(IDistributedCacheProvider distributedCachProvider)
         {
             _distributedCachProvider = distributedCachProvider;
         }

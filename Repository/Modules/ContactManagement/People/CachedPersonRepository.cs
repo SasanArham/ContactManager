@@ -8,11 +8,11 @@ namespace Repository.Modules.ContactManagement.People
     public class CachedPersonRepository : IPersonRepository
     {
         private readonly IPersonRepository _decorated;
-        private readonly IDistributedCachProvider _distributedCachProvider;
+        private readonly IDistributedCacheProvider _distributedCachProvider;
         private readonly IDatabaseContext _dbContext;
 
         public CachedPersonRepository(IPersonRepository decorated
-            , IDistributedCachProvider distributedCachProvider
+            , IDistributedCacheProvider distributedCachProvider
             , IDatabaseContext dbContext)
         {
             _decorated = decorated;
@@ -33,7 +33,7 @@ namespace Repository.Modules.ContactManagement.People
             if (person is null)
             {
                 person = await _decorated.GetByIDAsync(ID);
-                await _distributedCachProvider.CachAsync<Person>(cachKey, person);
+                await _distributedCachProvider.CacheAsync<Person>(cachKey, person);
             }
             else
             {

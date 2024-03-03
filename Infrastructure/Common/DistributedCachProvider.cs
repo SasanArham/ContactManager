@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Infrastructure.Common
 {
-    public class DistributedCachProvider : IDistributedCachProvider
+    public class DistributedCachProvider : IDistributedCacheProvider
     {
         private readonly IDistributedCache _distributedCache;
 
@@ -13,7 +13,7 @@ namespace Infrastructure.Common
             _distributedCache = distributedCache;
         }
 
-        public async Task CachAsync<T>(string key, T value, CancellationToken cancellationToken = default) where T : class
+        public async Task CacheAsync<T>(string key, T value, CancellationToken cancellationToken = default) where T : class
         {
             await _distributedCache.SetStringAsync(key, JsonConvert.SerializeObject(value), cancellationToken);
         }

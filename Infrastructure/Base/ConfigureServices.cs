@@ -32,7 +32,7 @@ namespace Infrastructure.Base
             });
 
 
-            services.AddScoped<IDistributedCachProvider, DistributedCachProvider>();
+            services.AddScoped<IDistributedCacheProvider, DistributedCachProvider>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;

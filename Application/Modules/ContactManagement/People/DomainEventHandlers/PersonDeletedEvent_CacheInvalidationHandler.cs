@@ -4,11 +4,11 @@ using MediatR;
 
 namespace Application.Modules.ContactManagement.People.DomainEventHandlers
 {
-    public class PersonDeletedEvent_CachInvalidationHandler : INotificationHandler<PersonDeletedEvent>
+    public class PersonDeletedEvent_CacheInvalidationHandler : INotificationHandler<PersonDeletedEvent>
     {
-        private readonly IDistributedCachProvider _distributedCachProvider;
+        private readonly IDistributedCacheProvider _distributedCachProvider;
 
-        public PersonDeletedEvent_CachInvalidationHandler(IDistributedCachProvider distributedCachProvider)
+        public PersonDeletedEvent_CacheInvalidationHandler(IDistributedCacheProvider distributedCachProvider)
         {
             _distributedCachProvider = distributedCachProvider;
         }
