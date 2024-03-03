@@ -1,4 +1,6 @@
-﻿namespace Domain.Modules.ContactManagement.People
+﻿using Domain.Modules.ContactManagement.People.Events;
+
+namespace Domain.Modules.ContactManagement.People
 {
     public class Person : Contact
     {
@@ -26,6 +28,15 @@
             Gender = gender;
             LastName = lastName;
             NationalCode = nationlaCode;
+        }
+
+        public override void Delete()
+        {
+            base.Delete();
+            AddDomainEvent(new PersonDeletedEvent
+            {
+                ID = ID
+            });
         }
     }
 }
