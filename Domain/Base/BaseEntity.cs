@@ -25,5 +25,10 @@ namespace Domain.Base
         {
             _DomainEvents.Add(domainEvent);
         }
+
+        public void ClearEventualConsistencyDomainEvents()
+        {
+            _DomainEvents.Clear();
+        }
     }
 }
