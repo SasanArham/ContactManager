@@ -16,6 +16,7 @@ namespace Application.Modules.ContactManagement.People.Commands.EditPerson
         public string NationalCode { get; init; } = string.Empty;
         public List<NewPhoneNumberDto> AddedPhoneNumbers { get; init; } = new();
         public List<NewAddressDto> AddedAddresses { get; init; } = new();
+        public int? EducationDegreeID { get; set; }
     }
 
     public class EditPersonCommandHandler : IRequestHandler<EditPersonCommand, Unit>
@@ -36,6 +37,8 @@ namespace Application.Modules.ContactManagement.People.Commands.EditPerson
         {
             var person = await _personRepository.GetByIDAsync(qm.ID);
             person.Edit(qm.Name, qm.LastName, qm.NationalCode, qm.Gender);
+            person.EditEducation(qm.EducationDegreeID);
+
             foreach (var phoneNumber in qm.AddedPhoneNumbers.Where(c => c.Type == PhoneNumberType.phone))
             {
                 person.AddPhoneNumber(phoneNumber.Number);

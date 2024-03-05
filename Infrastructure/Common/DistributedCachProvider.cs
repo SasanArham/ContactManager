@@ -15,7 +15,13 @@ namespace Infrastructure.Common
 
         public async Task CacheAsync<T>(string key, T value, CancellationToken cancellationToken = default) where T : class
         {
-            await _distributedCache.SetStringAsync(key, JsonConvert.SerializeObject(value), cancellationToken);
+            var serializerSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
+            var serializedValue = JsonConvert.SerializeObject(value, serializerSettings);
+            await _distributedCache.SetStringAsync(key, serializedValue, cancellationToken);
         }
 
         public async Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default) where T : class

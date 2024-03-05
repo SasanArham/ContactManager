@@ -42,5 +42,10 @@ namespace Domain.Modules.ContactManagement.People
                 ID = ID
             });
         }
+
+        public void EditEducation(int? educationDegreeID)
+        {
+            EducationDegreeID = educationDegreeID;
+        }
     }
 }
