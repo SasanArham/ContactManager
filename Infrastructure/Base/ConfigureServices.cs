@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Ardalis.GuardClauses;
 using Application.Common;
 using Infrastructure.Common;
+using StackExchange.Redis;
 
 namespace Infrastructure.Base
 {
@@ -24,15 +25,22 @@ namespace Infrastructure.Base
                 });
             services.AddScoped<IDatabaseContext>(provider => provider.GetRequiredService<DatabaseContext>());
 
+            var redisConnection = configuration.GetConnectionString("Redis");
+            Guard.Against.Null(redisConnection, "connectionString", "Connection string 'Redis' not found.");
             services.AddStackExchangeRedisCache(redisOptions =>
             {
-                var connection = configuration.GetConnectionString("Redis");
-                Guard.Against.Null(connection, "connectionString", "Connection string 'Redis' not found.");
-                redisOptions.Configuration = connection;
+                redisOptions.Configuration = redisConnection;
             });
+            services.AddSingleton<IConnectionMultiplexer>(sp =>
+                 ConnectionMultiplexer.Connect(new ConfigurationOptions
+                 {
+                     EndPoints = { redisConnection },
+                     //Ssl = true,
+                     AbortOnConnectFail = false,
+                 }));
 
 
-            services.AddScoped<IDistributedCacheProvider, DistributedCachProvider>();
+            services.AddScoped<IDistributedCacheProvider, RedisDistributedCachProvider>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
