@@ -3,6 +3,7 @@ using Repository.Base;
 using Application.Base;
 using Domain.Base;
 using WebAPI.Base;
+using WebAPI.Base.Middlewares;
 
 namespace WebApplication1
 {
@@ -27,6 +28,8 @@ namespace WebApplication1
             var app = builder.Build();
             app.UseSwagger();
             app.UseSwaggerUI();
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseHttpsRedirection();
             app.UseCors("ClientPermission");
             app.UseRouting();
