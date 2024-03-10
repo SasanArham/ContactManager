@@ -4,6 +4,8 @@ using Application.Base;
 using Domain.Base;
 using WebAPI.Base;
 using WebAPI.Base.Middlewares;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace WebApplication1
 {
@@ -37,7 +39,13 @@ namespace WebApplication1
             {
                 endpoints.MapControllers();
             });
+
+            app.MigrateDataBase();
+
             app.Run();
         }
+
     }
+
+    
 }
