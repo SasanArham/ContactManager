@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   webapi:
-    image: sasanarham/contact-manager:5
+    image: sasanarham/contact-manager:latest
     ports:
       - "8080:80"
     depends_on:
