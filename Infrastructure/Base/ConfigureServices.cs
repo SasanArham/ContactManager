@@ -25,11 +25,11 @@ namespace Infrastructure.Base
 
         private static IServiceCollection AddMainDatabase(this IServiceCollection services, IConfiguration configuration)
         {
-            var ServerName = Environment.GetEnvironmentVariable("DATABASE_SERVER") ?? configuration["MainDataBase.ServerName"];
-            var Port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? configuration["MainDataBase.Port"];
-            var DatabaseName = Environment.GetEnvironmentVariable("DATABASE_NAME") ?? configuration["MainDataBase.DbName"];
-            var Username = Environment.GetEnvironmentVariable("DATABASE_USER") ?? configuration["MainDataBase.Username"];
-            var Password = Environment.GetEnvironmentVariable("DATABASE_PASSWORD") ?? configuration["MainDataBase.MyStrngPassw0rd"];
+            var ServerName = Environment.GetEnvironmentVariable("DATABASE_SERVER") ?? configuration["MainDataBase:ServerName"];
+            var Port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? configuration["MainDataBase:Port"];
+            var DatabaseName = Environment.GetEnvironmentVariable("DATABASE_NAME") ?? configuration["MainDataBase:DbName"];
+            var Username = Environment.GetEnvironmentVariable("DATABASE_USER") ?? configuration["MainDataBase:Username"];
+            var Password = Environment.GetEnvironmentVariable("DATABASE_PASSWORD") ?? configuration["MainDataBase:MyStrngPassw0rd"];
             string connectionString = $"Server={ServerName},{Port};Database={DatabaseName};User Id={Username};Password={Password};TrustServerCertificate=Yes;MultipleActiveResultSets=true";
             Console.WriteLine("the connection is : " + connectionString);
 
@@ -46,8 +46,8 @@ namespace Infrastructure.Base
 
         private static IServiceCollection AddDistributedCacheDatabase(this IServiceCollection services, IConfiguration configuration)
         {
-            var ServerName = Environment.GetEnvironmentVariable("CACHE_DATABASE_SERVER") ?? configuration["DistributedCacheDataBase.ServerName"];
-            var Port = Environment.GetEnvironmentVariable("CACHE_SERVER_PORT") ?? configuration["DistributedCacheDataBase.Port"];
+            var ServerName = Environment.GetEnvironmentVariable("CACHE_DATABASE_SERVER") ?? configuration["DistributedCacheDataBase:ServerName"];
+            var Port = Environment.GetEnvironmentVariable("CACHE_SERVER_PORT") ?? configuration["DistributedCacheDataBase:Port"];
             var redisConnection = $"{ServerName}:{Port}";
 
             services.AddStackExchangeRedisCache(redisOptions =>
