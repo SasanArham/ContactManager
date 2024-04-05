@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Application.Common;
 using Infrastructure.Common;
 using StackExchange.Redis;
+using MassTransit;
+using System.Reflection;
+using Application.Base.Exceptions;
 
 namespace Infrastructure.Base
 {
@@ -15,7 +18,7 @@ namespace Infrastructure.Base
         {
             services.AddMainDatabase(configuration);
             services.AddDistributedCacheDatabase(configuration);
-
+            services.AddMassTransit(configuration);
 
             services.AddScoped<IDistributedCacheProvider, RedisDistributedCachProvider>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -61,6 +64,31 @@ namespace Infrastructure.Base
                      //Ssl = true,
                      AbortOnConnectFail = false,
                  }));
+            return services;
+        }
+
+        private static IServiceCollection AddMassTransit(this IServiceCollection services, IConfiguration configuration)
+        {
+            var hostAddress = Environment.GetEnvironmentVariable("EVENT_BUS_HOST_ADDRESS") ?? configuration["EVENT_BUS:HOST_ADDRESS"];
+
+            services.AddMassTransit(config =>
+            {
+                config.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("contact-manager", false));
+                var entryAssembly = Assembly.GetAssembly(typeof(CrudException));
+                config.AddConsumers(entryAssembly);
+                config.UsingRabbitMq((ctx, cfg) =>
+                {
+                    cfg.ConfigureEndpoints(ctx);
+                    cfg.Host(hostAddress);
+                });
+                config.AddEntityFrameworkOutbox<DatabaseContext>(options =>
+                {
+                    options.QueryDelay = TimeSpan.FromSeconds(30);
+                    options.UseSqlServer();
+                    options.UseBusOutbox();
+                });
+            });
+
             return services;
         }
     }

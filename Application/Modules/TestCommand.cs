@@ -1,34 +1,34 @@
-﻿using Application.Common;
-using Domain.Modules.ContactManagement.People;
-using Domain.Modules.ContactManagement.People.Services;
+﻿using Application.Base;
+using Application.Common.IntegrationMessages;
+using MassTransit;
+using MassTransit.Testing;
 using MediatR;
 
 namespace Application.Modules
 {
-    public class TestCommand : IRequest<List<Person>>
+    public class TestCommand : IRequest<Unit>
     {
     }
 
-    public class TestCommandHandler : IRequestHandler<TestCommand, List<Person>>
+    public class TestCommandHandler : IRequestHandler<TestCommand, Unit>
     {
-        private readonly IDistributedCacheProvider _distributedCacheProvider;
-        private readonly IPersonRepository _personRepository;
+        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public TestCommandHandler(IDistributedCacheProvider distributedCacheProvider
-            , IPersonRepository personRepository)
+        public TestCommandHandler(IPublishEndpoint publishEndpoint
+            , IUnitOfWork unitOfWork)
         {
-            _distributedCacheProvider = distributedCacheProvider;
-            _personRepository = personRepository;
+            _publishEndpoint = publishEndpoint;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<Person>> Handle(TestCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(TestCommand request, CancellationToken cancellationToken)
         {
-            var people = await _distributedCacheProvider.GetItemsFromSetAsync<Person>("people-default-list");
-            if (!people.Any())
-            {
-                people = await _personRepository.GetListAsync();
-            }
-            return people;
+            Console.WriteLine("******** Publishing the messge");
+            await _publishEndpoint.Publish(new TestMessage { Message = "Hello sasan" });
+            await _unitOfWork.SaveChangesAsync();
+            Console.WriteLine("******** Published the messge");
+            return Unit.Value;
         }
     }
 }

@@ -3,6 +3,7 @@ using Domain.Base;
 using Domain.Modules.ContactManagement.People;
 using Domain.Modules.Shared;
 using Infrastructure.Persistence.EntityConfigs.ConatctManagement.People;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,11 @@ namespace Infrastructure.Persistence
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasDefaultSchema("dbo");
+
+            // required if you want to implement OutBox pattern with MassTransit
+            modelBuilder.AddInboxStateEntity();
+            modelBuilder.AddOutboxMessageEntity();
+            modelBuilder.AddOutboxStateEntity();
 
             modelBuilder.ApplyConfiguration(new PersonConfig());
 

@@ -16,6 +16,7 @@ services:
       - DATABASE_PASSWORD=MyStr0ngPassw0rd_1
       - CACHE_DATABASE_SERVER=redis
       - CACHE_SERVER_PORT=6379
+      - EVENT_BUS_HOST_ADDRESS=amqp://guest:guest@rabbitmq:5672
 
   redis:
     image: redis:latest
@@ -31,3 +32,9 @@ services:
       MSSQL_TCP_PORT: "1433"
     ports:
       - "1432:1433"
+  
+  rabbitmq:
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+      - "15672:15672" # you houd run this command on rabbimq teminal to be able to use management panl in browser: rabbitmq-plugins enable rabbitmq_management
