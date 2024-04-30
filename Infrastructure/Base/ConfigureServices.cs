@@ -1,6 +1,5 @@
 ﻿using Application.Base;
 using Infrastructure.Persistence;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Application.Common;
@@ -9,6 +8,8 @@ using StackExchange.Redis;
 using MassTransit;
 using System.Reflection;
 using Application.Base.Exceptions;
+using Infrastructure.Common.FileManagement;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Base
 {
@@ -19,8 +20,10 @@ namespace Infrastructure.Base
             services.AddMainDatabase(configuration);
             services.AddDistributedCacheDatabase(configuration);
             services.AddMassTransit(configuration);
+            services.ConfigAzureApp(configuration);
 
             services.AddScoped<IDistributedCacheProvider, RedisDistributedCachProvider>();
+            services.AddScoped<IFileManager, AzureFileManager>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
@@ -32,7 +35,7 @@ namespace Infrastructure.Base
             var Port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? configuration["MainDataBase:Port"];
             var DatabaseName = Environment.GetEnvironmentVariable("DATABASE_NAME") ?? configuration["MainDataBase:DbName"];
             var Username = Environment.GetEnvironmentVariable("DATABASE_USER") ?? configuration["MainDataBase:Username"];
-            var Password = Environment.GetEnvironmentVariable("DATABASE_PASSWORD") ?? configuration["MainDataBase:MyStrngPassw0rd"];
+            var Password = Environment.GetEnvironmentVariable("DATABASE_PASSWORD") ?? configuration["MainDataBase:Password"];
             string connectionString = $"Server={ServerName},{Port};Database={DatabaseName};User Id={Username};Password={Password};TrustServerCertificate=Yes;MultipleActiveResultSets=true";
             Console.WriteLine("the connection is : " + connectionString);
 
@@ -87,6 +90,34 @@ namespace Infrastructure.Base
                     options.UseSqlServer();
                     options.UseBusOutbox();
                 });
+            });
+
+            return services;
+        }
+
+        private static IServiceCollection ConfigAzureApp(this IServiceCollection services, IConfiguration configuration)
+        {
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") is null)
+            {
+                Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", configuration["AzureApp:ASPNETCORE_ENVIRONMENT"]);
+            }
+            if (Environment.GetEnvironmentVariable("AZURE_CLIENT_ID") is null)
+            {
+                Environment.SetEnvironmentVariable("AZURE_CLIENT_ID", configuration["AzureApp:AZURE_CLIENT_ID"]);
+            }
+            if (Environment.GetEnvironmentVariable("AZURE_TENANT_ID") is null)
+            {
+                Environment.SetEnvironmentVariable("AZURE_TENANT_ID", configuration["AzureApp:AZURE_TENANT_ID"]);
+            }
+            if (Environment.GetEnvironmentVariable("AZURE_CLIENT_SECRET") is null)
+            {
+                Environment.SetEnvironmentVariable("AZURE_CLIENT_SECRET", configuration["AzureApp:AZURE_CLIENT_SECRET"]);
+            }
+
+            services.Configure<AzureStorageConfigs>((config) =>
+            {
+                config.DefaultContainer = configuration["AzureStorageConfigs:DefaultContainer"]!;
+                config.AccountName = configuration["AzureStorageConfigs:AccountName"]!;
             });
 
             return services;
