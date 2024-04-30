@@ -16,6 +16,10 @@ namespace Infrastructure.Persistence.EntityConfigs.ConatctManagement.People
                 owner.PhoneNumbers,
                 ownedBuilder => { ownedBuilder.ToTable("PersonPhoneNumbers"); }
                 );
+            builder.OwnsMany(owner =>
+                owner.Attachments,
+                ownedBuilder => { ownedBuilder.ToTable("PersonAttachments"); }
+                );
         }
     }
 }

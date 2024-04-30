@@ -1,4 +1,5 @@
 ﻿using Domain.Modules.ContactManagement.People.Events;
+using Domain.Modules.FileManagement;
 
 namespace Domain.Modules.ContactManagement.People
 {
@@ -17,6 +18,7 @@ namespace Domain.Modules.ContactManagement.People
         public virtual List<Person> IntroducdPeople { get; set; }
         public virtual MarriageStatus MarriageStatus { get; set; }
         public virtual EducationDegree EducationDegree { get; set; }
+        public virtual ICollection<Attachment> Attachments { get; set; }
 
         public Person()
         {
@@ -46,6 +48,13 @@ namespace Domain.Modules.ContactManagement.People
         public void EditEducation(int? educationDegreeID)
         {
             EducationDegreeID = educationDegreeID;
+        }
+
+        public string  AddAttachment(string name,string url)
+        {
+            var attachment = Attachment.Create(name, url);
+            Attachments.Add(attachment);
+            return attachment.Id;
         }
     }
 }
