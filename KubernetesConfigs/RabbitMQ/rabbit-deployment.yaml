@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: rabbit-deployment
+  labels:
+    run: rabbit
+spec:
+  selector:
+    matchLabels:
+      run: rabbit
+      app: rabbit
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        kubernetes.io/change-cause: "First deployment version"
+      labels:
+        app: rabbit
+        run: rabbit
+    spec:
+      containers:
+        - name: rabbit
+          image: rabbitmq:latest
+          volumeMounts: 
+            - mountPath: /var/lib/rabbitmq
+              name: rabbit-storage
+      volumes:
+        - name: rabbit-storage
+          persistentVolumeClaim: 
+            claimName: rabbit-pvclaim

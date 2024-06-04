@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: contactmanager-ingress
+spec:
+  defaultBackend: 
+    service: 
+      name: webapi-service
+      port:
+        number: 8081
+  rules:
+  - host: rabbit.localhost
+    http:
+      paths:
+        - pathType: Prefix
+          path: /
+          backend:
+            service:
+              name: rabbit-service
+              port:
+                number: 15672

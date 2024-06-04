@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: rabbit
+  name: rabbit-service
+spec:
+  selector:
+    app: rabbit
+  ports:
+    - protocol: TCP
+      name: rabbit-q
+      port: 5672
+      targetPort: 5672  
+    - protocol: TCP
+      name: rabbit-management    
+      port: 15672
+      targetPort: 15672  
+  type: ClusterIP

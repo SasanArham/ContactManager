@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rabbit-pv
+  labels:
+    volume: rabbit-pv
+spec:
+  capacity:
+    storage: 300Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: 192.168.0.1
+    path: "/rabbit"
+

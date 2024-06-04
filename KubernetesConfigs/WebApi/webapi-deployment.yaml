@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: webapi-deployment
+  labels:
+    run: webapi
+spec:
+  selector:
+    matchLabels:
+      run: webapi
+      app: webapi
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        kubernetes.io/change-cause: "First deployment version"
+      labels:
+        app: webapi
+        run: webapi
+    spec:
+      containers:
+        - name: webapi
+          image: sasanarham/contact-manager:1.0.3
+          envFrom:
+            - secretRef: 
+                name: webapi-secret

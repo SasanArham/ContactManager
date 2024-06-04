@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: redis-deployment
+  labels:
+    run: redis
+spec:
+  selector:
+    matchLabels:
+      run: redis
+      app: redis
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        kubernetes.io/change-cause: "First deployment version"
+      labels:
+        app: redis
+        run: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:latest
+          volumeMounts: 
+            - mountPath: /data
+              name: redis-storage
+      volumes:
+        - name: redis-storage
+          persistentVolumeClaim: 
+            claimName: redis-pvclaim
