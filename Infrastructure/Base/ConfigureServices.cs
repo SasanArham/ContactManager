@@ -17,10 +17,10 @@ namespace Infrastructure.Base
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.ConfigAzureApp(configuration);
             services.AddMainDatabase(configuration);
             services.AddDistributedCacheDatabase(configuration);
             services.AddMassTransit(configuration);
-            services.ConfigAzureApp(configuration);
 
             services.AddScoped<IDistributedCacheProvider, RedisDistributedCachProvider>();
             services.AddScoped<IFileManager, AzureFileManager>();
