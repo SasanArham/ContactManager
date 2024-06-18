@@ -84,7 +84,7 @@ namespace Infrastructure.Base
         {
             try
             {
-                var keyVaultUrl = Environment.GetEnvironmentVariable("Key_Vault_Url") ?? configuration["Key_Vault_Url"];
+                var keyVaultUrl = Environment.GetEnvironmentVariable("Key_Vault_Url") ?? configuration["AzureApp:Key_Vault_Url"];
                 var client = new SecretClient(new Uri(keyVaultUrl!), new DefaultAzureCredential());
                 var connectionstring = client.GetSecret("MainDataBaseConnectionString").Value.Value;
                 return connectionstring;
