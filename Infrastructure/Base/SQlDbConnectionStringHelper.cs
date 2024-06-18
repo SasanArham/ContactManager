@@ -8,9 +8,9 @@ namespace Infrastructure.Base
     {
         /// <summary>
         /// Tries to get main db sql connection string from varous resourses in following order:
-        /// <para> App setting </para>
-        /// <para> Enviroment variables</para>
         /// <para> Azure key vault </para>
+        /// <para> Enviroment variables</para>
+        /// <para> App setting </para>
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configuration"></param>
@@ -20,7 +20,7 @@ namespace Infrastructure.Base
             // ToDo : Can we do this with "Chain of responsiblities" design pattern?
             string connectionString;
 
-            connectionString = GetFromAppSettings(configuration);
+            connectionString = GetFromAzureKeyVault(configuration);
             if (!string.IsNullOrEmpty(connectionString))
             {
                 return connectionString;
@@ -32,12 +32,11 @@ namespace Infrastructure.Base
                 return connectionString;
             }
 
-            connectionString = GetFromAzureKeyVault(configuration);
+            connectionString = GetFromAppSettings(configuration);
             if (!string.IsNullOrEmpty(connectionString))
             {
                 return connectionString;
             }
-
             throw new Exception("Could not find main db connectionstring");
         }
 
