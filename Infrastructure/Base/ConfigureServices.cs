@@ -10,6 +10,9 @@ using System.Reflection;
 using Application.Base.Exceptions;
 using Infrastructure.Common.FileManagement;
 using Microsoft.Extensions.DependencyInjection;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using System.Xml.Schema;
 
 namespace Infrastructure.Base
 {
@@ -31,14 +34,7 @@ namespace Infrastructure.Base
 
         private static IServiceCollection AddMainDatabase(this IServiceCollection services, IConfiguration configuration)
         {
-            var ServerName = Environment.GetEnvironmentVariable("DATABASE_SERVER") ?? configuration["MainDataBase:ServerName"];
-            var Port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? configuration["MainDataBase:Port"];
-            var DatabaseName = Environment.GetEnvironmentVariable("DATABASE_NAME") ?? configuration["MainDataBase:DbName"];
-            var Username = Environment.GetEnvironmentVariable("DATABASE_USER") ?? configuration["MainDataBase:Username"];
-            var Password = Environment.GetEnvironmentVariable("DATABASE_PASSWORD") ?? configuration["MainDataBase:Password"];
-            string connectionString = $"Server={ServerName},{Port};Database={DatabaseName};User Id={Username};Password={Password};TrustServerCertificate=Yes;MultipleActiveResultSets=true";
-            Console.WriteLine("the connection is : " + connectionString);
-
+            string connectionString = SQlDbConnectionStringHelper.GetMainDbConnectionString(configuration);
             services.AddDbContext<DatabaseContext>(
                 (sp, options) =>
                 {
