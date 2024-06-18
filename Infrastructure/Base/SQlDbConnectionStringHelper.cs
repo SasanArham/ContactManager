@@ -15,24 +15,24 @@ namespace Infrastructure.Base
         /// <param name="services"></param>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static string GetMainDbConnectionString(IConfiguration configuration)
+        public static string GetConnectionString(IConfiguration configuration)
         {
             // ToDo : Can we do this with "Chain of responsiblities" design pattern?
             string connectionString;
 
-            connectionString = GetConnectionStringFromAppSettings(configuration);
+            connectionString = GetFromAppSettings(configuration);
             if (!string.IsNullOrEmpty(connectionString))
             {
                 return connectionString;
             }
 
-            connectionString = GetConnectionStringFromEnviromentVariables();
+            connectionString = GetFromEnviromentVariables();
             if (!string.IsNullOrEmpty(connectionString))
             {
                 return connectionString;
             }
 
-            connectionString = GetConnectionStringFromAzureKeyVault();
+            connectionString = GetFromAzureKeyVault();
             if (!string.IsNullOrEmpty(connectionString))
             {
                 return connectionString;
@@ -41,7 +41,7 @@ namespace Infrastructure.Base
             throw new Exception("Could not find main db connectionstring");
         }
 
-        private static string GetConnectionStringFromEnviromentVariables()
+        private static string GetFromEnviromentVariables()
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Infrastructure.Base
             }
         }
 
-        private static string GetConnectionStringFromAzureKeyVault()
+        private static string GetFromAzureKeyVault()
         {
             try
             {
@@ -95,7 +95,7 @@ namespace Infrastructure.Base
             }
         }
 
-        private static string GetConnectionStringFromAppSettings(IConfiguration configuration)
+        private static string GetFromAppSettings(IConfiguration configuration)
         {
             try
             {

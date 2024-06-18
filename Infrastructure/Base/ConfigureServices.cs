@@ -10,9 +10,6 @@ using System.Reflection;
 using Application.Base.Exceptions;
 using Infrastructure.Common.FileManagement;
 using Microsoft.Extensions.DependencyInjection;
-using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
-using System.Xml.Schema;
 
 namespace Infrastructure.Base
 {
@@ -34,7 +31,7 @@ namespace Infrastructure.Base
 
         private static IServiceCollection AddMainDatabase(this IServiceCollection services, IConfiguration configuration)
         {
-            string connectionString = SQlDbConnectionStringHelper.GetMainDbConnectionString(configuration);
+            string connectionString = SQlDbConnectionStringHelper.GetConnectionString(configuration);
             services.AddDbContext<DatabaseContext>(
                 (sp, options) =>
                 {
