@@ -32,7 +32,7 @@ namespace Infrastructure.Base
                 return connectionString;
             }
 
-            connectionString = GetFromAzureKeyVault();
+            connectionString = GetFromAzureKeyVault(configuration);
             if (!string.IsNullOrEmpty(connectionString))
             {
                 return connectionString;
@@ -80,13 +80,13 @@ namespace Infrastructure.Base
             }
         }
 
-        private static string GetFromAzureKeyVault()
+        private static string GetFromAzureKeyVault(IConfiguration configuration)
         {
             try
             {
-                var keyVaultUrl = "MyKeyVaultUrl";
-                var client = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
-                var connectionstring = client.GetSecret("sqlConnectionString").Value.Value;
+                var keyVaultUrl = Environment.GetEnvironmentVariable("Key_Vault_Url") ?? configuration["Key_Vault_Url"];
+                var client = new SecretClient(new Uri(keyVaultUrl!), new DefaultAzureCredential());
+                var connectionstring = client.GetSecret("MainDataBaseConnectionString").Value.Value;
                 return connectionstring;
             }
             catch (Exception)
