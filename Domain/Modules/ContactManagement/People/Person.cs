@@ -56,5 +56,7 @@ namespace Domain.Modules.ContactManagement.People
             Attachments.Add(attachment);
             return attachment.Id;
         }
+
+        public Attachment? FindAttachmentByID(string attachmentID) => Attachments.FirstOrDefault(c => c.Id == attachmentID);
     }
 }

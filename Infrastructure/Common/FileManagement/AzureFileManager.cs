@@ -59,5 +59,16 @@ namespace Infrastructure.Common.FileManagement
 
             return uriBuilder.ToUri();
         }
+
+        public async Task<string> GetDownloadUrl(string url)
+        {
+            var blobServiceClient = new BlobServiceClient(new Uri(AzureStorageHelper.StoragePath(_azureStorageConfigs.AccountName)), new DefaultAzureCredential());
+            var blobUri = new Uri($"{AzureStorageHelper.StoragePath(_azureStorageConfigs.AccountName)}/{_azureStorageConfigs.DefaultContainer}/{url}");
+            var userDelegationKey = await blobServiceClient.GetUserDelegationKeyAsync(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddMinutes(2));
+            Uri blobSASURI = CreateUserDelegationSASBlob(_azureStorageConfigs.DefaultContainer, url, blobUri, _azureStorageConfigs.AccountName
+                , userDelegationKey, BlobSasPermissions.Read);
+            return blobSASURI.ToString();
+
+        }
     }
 }
