@@ -32,7 +32,7 @@ namespace Domain.Modules.ContactManagement.People
             NationalCode = nationlaCode;
             AddDomainEvent(new PersonEditedEvent
             {
-                ID = ID
+                Guid = this.GuID
             });
         }
 
@@ -50,7 +50,7 @@ namespace Domain.Modules.ContactManagement.People
             EducationDegreeID = educationDegreeID;
         }
 
-        public string  AddAttachment(string name,string url)
+        public string AddAttachment(string name, string url)
         {
             var attachment = Attachment.Create(name, url);
             Attachments.Add(attachment);

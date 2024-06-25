@@ -5,11 +5,11 @@ using IntegrationPersonDeletedEvent = Messages.Events.Modules.Contactmanagement.
 
 namespace Application.Modules.ContactManagement.People.DomainEventHandlers
 {
-    public class PersonDeletedEvent_CacheUpdate : INotificationHandler<PersonDeletedEvent>
+    public class PersonDeletedEventHandler : INotificationHandler<PersonDeletedEvent>
     {
         private readonly IPublishEndpoint _publishEndpoint;
 
-        public PersonDeletedEvent_CacheUpdate(IPublishEndpoint publishEndpoint)
+        public PersonDeletedEventHandler(IPublishEndpoint publishEndpoint)
         {
             _publishEndpoint = publishEndpoint;
         }

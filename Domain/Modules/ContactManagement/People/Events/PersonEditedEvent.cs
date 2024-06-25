@@ -4,6 +4,6 @@ namespace Domain.Modules.ContactManagement.People.Events
 {
     public record PersonEditedEvent : BaseEvent
     {
-        public int ID { get; init; }
+        public string Guid { get; init; }
     }
 }
