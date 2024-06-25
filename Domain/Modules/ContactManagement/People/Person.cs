@@ -41,7 +41,7 @@ namespace Domain.Modules.ContactManagement.People
             base.Delete();
             AddDomainEvent(new PersonDeletedEvent
             {
-                ID = ID
+                Guid = this.GuID
             });
         }
 
