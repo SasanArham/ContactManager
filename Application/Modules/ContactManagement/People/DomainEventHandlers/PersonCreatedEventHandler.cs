@@ -3,20 +3,16 @@ using MediatR;
 using PersonCreatedEvent = Domain.Modules.ContactManagement.People.Events.PersonCreatedEvent;
 using IntegrationPersonCreatedEvent = Messages.Events.Modules.Contactmanagement.People.PersonCreatedEvent;
 using Messages.Events.Modules.Contactmanagement.People;
-using Domain.Modules.ContactManagement.People.Services;
 
 namespace Application.Modules.ContactManagement.People.DomainEventHandlers
 {
-    public class PersonCreatedEvent_CacheUpdateEventHandler : INotificationHandler<PersonCreatedEvent>
+    public class PersonCreatedEventHandler : INotificationHandler<PersonCreatedEvent>
     {
         private readonly IPublishEndpoint _publishEndpoint;
-        private readonly IPersonRepository _personRepository;
 
-        public PersonCreatedEvent_CacheUpdateEventHandler(IPublishEndpoint publishEndpoint
-            , IPersonRepository personRepository)
+        public PersonCreatedEventHandler(IPublishEndpoint publishEndpoint)
         {
             _publishEndpoint = publishEndpoint;
-            _personRepository = personRepository;
         }
 
         public async Task Handle(PersonCreatedEvent notif, CancellationToken cancellationToken)
