@@ -4,7 +4,7 @@ using WebAPI.Base.Heleprs;
 
 namespace WebAPI.Controllers.ContactManagement.People
 {
-    [Route($"{BaseRoutingHelper.ContactManagement}/people/Attachment")]
+    [Route($"{BaseRoutingHelper.ContactManagement}/people/{{personID}}/Attachment")]
     [Tags("people")]
     public class AttachmentController : BaseController
     {
