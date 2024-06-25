@@ -15,5 +15,6 @@ namespace Application.Modules.ContactManagement.People.Queries.GetPeople
         public DateTimeOffset? BirthDate { get; set; }
         public string NationalCode { get; set; } = string.Empty;
         public Gender? Gender { get; set; } = null;
+        public string Guid { get; set; } = string.Empty;
     }
 }

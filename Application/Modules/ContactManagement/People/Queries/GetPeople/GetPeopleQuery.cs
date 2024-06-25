@@ -32,23 +32,23 @@ namespace Application.Modules.ContactManagement.People.Queries.GetPeople
             if (request.Skip + request.Take <= PersonCacheHelper.DefaultList.MaxLen)
             {
                 var cacheKey = PersonCacheHelper.DefaultList.Key;
-                var cachedPeople = await _distributedCacheProvider.GetItemsFromSetAsync<GetPeopleResponse>(cacheKey, request.Skip, request.Take);
-                if (cachedPeople.Count < request.Take)
+                var cachedPeople = await _distributedCacheProvider.GetAsync<List<GetPeopleResponse>>(cacheKey);
+                if (cachedPeople is null || !cachedPeople.Any())
                 {
-                    var actualCount = await _personRepository.CountAsync(request.Skip, request.Take);
-                    if (actualCount > cachedPeople.Count)
+                    var peopleFromDb = await _personRepository.GetListAsync(request.Skip, request.Take);
+                    cachedPeople = _mapper.Map<List<GetPeopleResponse>>(peopleFromDb);
+                    try
                     {
-                        await _distributedCacheProvider.InvalidateAllInSetAsync(PersonCacheHelper.DefaultList.Key);
-                        var people = await _personRepository.GetListAsync(request.Skip, request.Take);
-                        var response = _mapper.Map<List<GetPeopleResponse>>(people);
-                        response.ForEach(async item => await _distributedCacheProvider.CacheInSetAsync(PersonCacheHelper.DefaultList.Key, item, item.ID));
-                        return response;
+                        await _distributedCacheProvider.CacheAsync(PersonCacheHelper.DefaultList.Key, cachedPeople);
+                    }
+                    catch (Exception)
+                    {
                     }
                 }
                 return cachedPeople;
             }
-            var peopleFromDb = await _personRepository.GetListAsync(request.Skip, request.Take);
-            var result = _mapper.Map<List<GetPeopleResponse>>(peopleFromDb);
+            var _peopleFromDb = await _personRepository.GetListAsync(request.Skip, request.Take);
+            var result = _mapper.Map<List<GetPeopleResponse>>(_peopleFromDb);
             return result;
         }
     }
