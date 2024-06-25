@@ -9,7 +9,7 @@ using WebAPI.Base.Heleprs;
 namespace WebAPI.Controllers.ContactManagement.People
 {
     [Route($"{BaseRoutingHelper.ContactManagement}/people")]
-    [Tags("publicprofile")]
+    [Tags("people")]
     public class PersonController : BaseController
     {
         /// <summary>

@@ -1,9 +1,12 @@
 ﻿using Application.Modules.ContactManagement.People.Commands.AddAttachment;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Base.Heleprs;
 
 namespace WebAPI.Controllers.ContactManagement.People
 {
-    public class PersonAttachmentController : BaseController
+    [Route($"{BaseRoutingHelper.ContactManagement}/people/Attachment")]
+    [Tags("people")]
+    public class AttachmentController : BaseController
     {
 
         [HttpPost]
