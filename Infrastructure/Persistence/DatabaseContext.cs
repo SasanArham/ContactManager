@@ -43,8 +43,6 @@ namespace Infrastructure.Persistence
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var res = await base.SaveChangesAsync(cancellationToken);
-
             var entities = ChangeTracker
                     .Entries<BaseEntity>()
                     .Where(e => e.Entity.EventualConsistencyDomainEvents.Any())
@@ -59,6 +57,7 @@ namespace Infrastructure.Persistence
             foreach (var domainEvent in domainEvents)
                 await _mediator.Publish(domainEvent, cancellationToken);
 
+            var res = await base.SaveChangesAsync(cancellationToken);
             return res;
         }
     }

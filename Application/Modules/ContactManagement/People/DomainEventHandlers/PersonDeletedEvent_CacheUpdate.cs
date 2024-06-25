@@ -38,7 +38,7 @@ namespace Application.Modules.ContactManagement.People.DomainEventHandlers
                 if (personToBeAddedToDefaultPeopleList is not null)
                 {
                     var personToCache = _mapper.Map<GetPeopleResponse>(personToBeAddedToDefaultPeopleList);
-                    await _distributedCachProvider.CacheInSetAsync(PersonCacheHelper.DefaultList.Key, personToBeAddedToDefaultPeopleList
+                    await _distributedCachProvider.CacheInSetAsync(PersonCacheHelper.DefaultList.Key, personToCache
                         , personToBeAddedToDefaultPeopleList.ID);
                 }
             }

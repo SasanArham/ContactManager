@@ -10,7 +10,7 @@ namespace Domain.Modules.ContactManagement
         public string IntroducerName { get; set; } = string.Empty;
         public int? IntroducerPersonID { get; set; }
         public int? AccountManagerID { get; set; }
-        public  List<Adress> Addresses { get; set; } = new();
+        public List<Adress> Addresses { get; set; } = new();
         public List<PhoneNumber> PhoneNumbers { get; set; } = new();
 
         public void AddAddress(int creatorUserID, int? cityID, string address, string postalCode)
@@ -118,6 +118,14 @@ namespace Domain.Modules.ContactManagement
         public IEnumerable<PhoneNumber> GetMobiles()
         {
             return PhoneNumbers.Where(c => c.type == PhoneNumberType.mobile);
+        }
+        public IEnumerable<PhoneNumber> GetFaxes()
+        {
+            return PhoneNumbers.Where(c => c.type == PhoneNumberType.fax);
+        }
+        public IEnumerable<PhoneNumber> GetPhones()
+        {
+            return PhoneNumbers.Where(c => c.type == PhoneNumberType.phone);
         }
 
         public bool HasNumber(PhoneNumber number) => PhoneNumbers.Contains(number);

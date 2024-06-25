@@ -1,39 +1,44 @@
-﻿using Application.Common;
-using Application.Modules.ContactManagement.People.Helpers;
-using Application.Modules.ContactManagement.People.Queries.GetPeople;
-using AutoMapper;
-using Domain.Modules.ContactManagement.People.Events;
-using Domain.Modules.ContactManagement.People.Services;
+﻿using MassTransit;
 using MediatR;
+using PersonCreatedEvent = Domain.Modules.ContactManagement.People.Events.PersonCreatedEvent;
+using IntegrationPersonCreatedEvent = Messages.Events.Modules.Contactmanagement.People.PersonCreatedEvent;
+using Messages.Events.Modules.Contactmanagement.People;
+using Domain.Modules.ContactManagement.People.Services;
 
 namespace Application.Modules.ContactManagement.People.DomainEventHandlers
 {
     public class PersonCreatedEvent_CacheUpdateEventHandler : INotificationHandler<PersonCreatedEvent>
     {
-        private readonly IDistributedCacheProvider _distributedCachProvider;
+        private readonly IPublishEndpoint _publishEndpoint;
         private readonly IPersonRepository _personRepository;
-        private readonly IMapper _mapper;
 
-        public PersonCreatedEvent_CacheUpdateEventHandler(IDistributedCacheProvider distributedCachProvider
-            , IPersonRepository personRepository
-            , IMapper mapper)
+        public PersonCreatedEvent_CacheUpdateEventHandler(IPublishEndpoint publishEndpoint
+            , IPersonRepository personRepository)
         {
-            _distributedCachProvider = distributedCachProvider;
+            _publishEndpoint = publishEndpoint;
             _personRepository = personRepository;
-            _mapper = mapper;
         }
 
-        public async Task Handle(PersonCreatedEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(PersonCreatedEvent notif, CancellationToken cancellationToken)
         {
-            var createdPerson = await _personRepository.GetByGuidAsync(notification.GuiD);
-            var personToBeCached = _mapper.Map<GetPeopleResponse>(createdPerson);
-            await _distributedCachProvider.CacheInSetAsync(PersonCacheHelper.DefaultList.Key, personToBeCached, createdPerson.ID);
-            var cachedLen = await _distributedCachProvider.SetLenghtAsync(PersonCacheHelper.DefaultList.Key);
-            if (cachedLen > PersonCacheHelper.DefaultList.MaxLen)
-            {
-                await _distributedCachProvider.PopFromSetAsync<GetPeopleResponse>(PersonCacheHelper.DefaultList.Key);
-            }
 
+            var integrationEvent = new IntegrationPersonCreatedEvent
+            {
+                Guid = notif.Guid,
+                Name = notif.Name,
+                LastName = notif.LastName,
+                Gendr = (int?)notif.Gendr,
+                NationalCode = notif.NationalCode,
+                Mobiles = notif.Mobiles.Select(c => c.Number),
+                Phones = notif.Phones.Select(c => c.Number),
+                Faxes = notif.Faxes.Select(c => c.Number),
+                Addresses = notif.Addresses.Select(c => new Address
+                {
+                    CityID = c.CityID,
+                    Detail = c.Details
+                })
+            };
+            await _publishEndpoint.Publish(integrationEvent);
         }
     }
 }

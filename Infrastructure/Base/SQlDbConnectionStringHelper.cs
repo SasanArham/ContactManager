@@ -1,6 +1,7 @@
 ﻿using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Configuration;
+using System.Formats.Tar;
 
 namespace Infrastructure.Base
 {
@@ -20,17 +21,17 @@ namespace Infrastructure.Base
             // ToDo : Can we do this with "Chain of responsiblities" design pattern?
             string connectionString;
 
-            connectionString = GetFromAzureKeyVault(configuration);
-            if (!string.IsNullOrEmpty(connectionString))
-            {
-                return connectionString;
-            }
+            //connectionString = GetFromAzureKeyVault(configuration);
+            //if (!string.IsNullOrEmpty(connectionString))
+            //{
+            //    return connectionString;
+            //}
 
-            connectionString = GetFromEnviromentVariables();
-            if (!string.IsNullOrEmpty(connectionString))
-            {
-                return connectionString;
-            }
+            //connectionString = GetFromEnviromentVariables();
+            //if (!string.IsNullOrEmpty(connectionString))
+            //{
+            //    return connectionString;
+            //}
 
             connectionString = GetFromAppSettings(configuration);
             if (!string.IsNullOrEmpty(connectionString))
@@ -123,7 +124,15 @@ namespace Infrastructure.Base
                     return string.Empty;
                 }
 
-                string connectionString = $"Server={ServerName},{Port};Database={DatabaseName};User Id={Username};Password={Password};TrustServerCertificate=Yes;MultipleActiveResultSets=true";
+                string connectionString;
+                if (string.IsNullOrEmpty(Port))
+                {
+                    connectionString = $"Server={ServerName};Database={DatabaseName};User Id={Username};Password={Password};TrustServerCertificate=Yes;MultipleActiveResultSets=true";
+                }
+                else
+                {
+                    connectionString = $"Server={ServerName},{Port};Database={DatabaseName};User Id={Username};Password={Password};TrustServerCertificate=Yes;MultipleActiveResultSets=true";
+                }
                 return connectionString;
             }
             catch (Exception)

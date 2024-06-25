@@ -177,10 +177,22 @@ namespace Domain.Modules.ContactManagement.People.Builders
 
             return this;
         }
-        
+
         public Person Get()
         {
-            person.AddDomainEvent(new PersonCreatedEvent(person.GuID));
+            var creationEvent = new PersonCreatedEvent
+            {
+                Guid = person.GuID,
+                Gendr = person.Gender,
+                Name = person.Name,
+                LastName = person.LastName,
+                Mobiles = person.GetMobiles(),
+                Addresses = person.Addresses,
+                Faxes = person.GetFaxes(),
+                Phones = person.GetPhones(),
+                NationalCode = person.NationalCode
+            };
+            person.AddDomainEvent(creationEvent);
             return person;
         }
     }

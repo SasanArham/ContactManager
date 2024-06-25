@@ -1,7 +1,5 @@
 ﻿using Application.Base;
-using Application.Common.IntegrationMessages;
 using MassTransit;
-using MassTransit.Testing;
 using MediatR;
 
 namespace Application.Modules
@@ -24,11 +22,12 @@ namespace Application.Modules
 
         public async Task<Unit> Handle(TestCommand request, CancellationToken cancellationToken)
         {
-            Console.WriteLine("******** Publishing the messge");
-            await _publishEndpoint.Publish(new TestMessage { Message = "Hello sasan" });
-            await _unitOfWork.SaveChangesAsync();
-            Console.WriteLine("******** Published the messge");
-            return Unit.Value;
+            //Console.WriteLine("******** Publishing the messge");
+            //await _publishEndpoint.Publish(new TestMessage { Message = "Hello sasan" });
+            //await _unitOfWork.SaveChangesAsync();
+            //Console.WriteLine("******** Published the messge");
+            //return Unit.Value;
+            throw new NotImplementedException();
         }
     }
 }

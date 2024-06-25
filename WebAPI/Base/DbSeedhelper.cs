@@ -17,7 +17,7 @@ namespace WebAPI.Base
                 }
                 Console.WriteLine("Migrated successfully");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Console.WriteLine("Failed to migrate");
                 throw;
