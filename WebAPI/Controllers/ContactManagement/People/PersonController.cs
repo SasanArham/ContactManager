@@ -4,9 +4,12 @@ using Application.Modules.ContactManagement.People.Commands.EditPerson;
 using Application.Modules.ContactManagement.People.Queries.GetPeople;
 using Application.Modules.ContactManagement.People.Queries.GetPersonByID;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Base.Heleprs;
 
 namespace WebAPI.Controllers.ContactManagement.People
 {
+    [Route($"{BaseRoutingHelper.ContactManagement}/people")]
+    [Tags("publicprofile")]
     public class PersonController : BaseController
     {
         /// <summary>
@@ -53,7 +56,7 @@ namespace WebAPI.Controllers.ContactManagement.People
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
-        [HttpGet("[action]")]
+        [HttpGet("{ID}}")]
         [ProducesResponseType(typeof(GetPersonByIDResponse), 200)]
         public async Task<IActionResult> GetByIDAsync(int ID)
         {
