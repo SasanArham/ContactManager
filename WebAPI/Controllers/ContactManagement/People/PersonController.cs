@@ -56,9 +56,9 @@ namespace WebAPI.Controllers.ContactManagement.People
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
-        [HttpGet("{ID}}")]
+        [HttpGet("{ID}")]
         [ProducesResponseType(typeof(GetPersonByIDResponse), 200)]
-        public async Task<IActionResult> GetByIDAsync(int ID)
+        public async Task<IActionResult> GetAsync(int ID)
         {
             var person = await Mediator.Send(new GetPersonByIDQuery { ID = ID });
             return Ok(person);
