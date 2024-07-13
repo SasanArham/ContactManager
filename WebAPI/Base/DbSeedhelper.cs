@@ -1,5 +1,6 @@
 ﻿using Application.Base;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace WebAPI.Base
 {
@@ -7,7 +8,7 @@ namespace WebAPI.Base
     {
         public static void MigrateDataBase(this WebApplication app)
         {
-            Console.WriteLine("Trying to migrate db if required");
+            Log.Information("Trying to migrate db if required");
             try
             {
                 using (var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
@@ -19,7 +20,7 @@ namespace WebAPI.Base
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Failed to migrate");
+                Log.Fatal("{@Message}{@Exception}", "Failed to migrate", ex);
                 throw;
             }
         }
