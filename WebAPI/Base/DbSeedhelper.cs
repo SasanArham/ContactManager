@@ -16,7 +16,7 @@ namespace WebAPI.Base
                     var context = scope.ServiceProvider.GetService<IDatabaseContext>();
                     context!.Database.Migrate();
                 }
-                Console.WriteLine("Migrated successfully");
+                Log.Information("Migrated successfully");
             }
             catch (Exception ex)
             {
