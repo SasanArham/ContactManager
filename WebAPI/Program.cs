@@ -4,6 +4,7 @@ using Application.Base;
 using Domain.Base;
 using WebAPI.Base;
 using WebAPI.Base.Middlewares;
+using Serilog;
 
 
 namespace WebApplication1
@@ -13,7 +14,8 @@ namespace WebApplication1
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            
+            builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
             builder.Services.ConfigControllers();
             builder.Services.ConfigSwagger();
 

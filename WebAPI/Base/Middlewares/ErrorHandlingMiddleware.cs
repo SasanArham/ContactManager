@@ -8,10 +8,13 @@ namespace WebAPI.Base.Middlewares
     public class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<ErrorHandlingMiddleware> _logger;
 
-        public ErrorHandlingMiddleware(RequestDelegate next)
+        public ErrorHandlingMiddleware(RequestDelegate next
+            , ILogger<ErrorHandlingMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
@@ -20,8 +23,9 @@ namespace WebAPI.Base.Middlewares
             {
                 await _next(context);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
+                _logger.LogError("{@Exception}{@LoggedAt}", ex, "ErrorHandlingMiddleware");
                 await HandleExceptionAsync(context, ex);
             }
         }
