@@ -20,7 +20,7 @@ namespace Domain.Modules.ContactManagement
             Addresses.Add(newaAddress);
         }
 
-        public virtual Adress GetDefaultAddress(bool returnFirstAddressIfNonWasDefault = true)
+        public virtual Adress? GetDefaultAddress(bool returnFirstAddressIfNonWasDefault = true)
         {
             var defaultAddress = Addresses.FirstOrDefault(c => c.IsDefault);
             if (defaultAddress is null)
@@ -76,7 +76,7 @@ namespace Domain.Modules.ContactManagement
             PhoneNumbers.Add(phoneNumber);
         }
 
-        public virtual PhoneNumber GetDefaultPhone(bool returnFirstAddressIfNonWasDefault = true)
+        public virtual PhoneNumber? GetDefaultPhone(bool returnFirstAddressIfNonWasDefault = true)
         {
             var number = PhoneNumbers.FirstOrDefault(c => c.type == PhoneNumberType.phone && c.IsDefault);
             if (number is null)
@@ -89,7 +89,7 @@ namespace Domain.Modules.ContactManagement
             return number;
         }
 
-        public virtual PhoneNumber GetDefaultMobile(bool returnFirstAddressIfNonWasDefault = true)
+        public virtual PhoneNumber? GetDefaultMobile(bool returnFirstAddressIfNonWasDefault = true)
         {
             var number = PhoneNumbers.FirstOrDefault(c => c.type == PhoneNumberType.mobile && c.IsDefault);
             if (number is null)
@@ -102,7 +102,7 @@ namespace Domain.Modules.ContactManagement
             return number;
         }
 
-        public virtual PhoneNumber GetDefaultFax(bool returnFirstAddressIfNonWasDefault = true)
+        public virtual PhoneNumber? GetDefaultFax(bool returnFirstAddressIfNonWasDefault = true)
         {
             var number = PhoneNumbers.FirstOrDefault(c => c.type == PhoneNumberType.fax && c.IsDefault);
             if (number is null)

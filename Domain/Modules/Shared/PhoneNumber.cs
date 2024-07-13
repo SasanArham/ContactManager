@@ -11,10 +11,6 @@ namespace Domain.Modules.Shared
         public int? CreatorUserID { get; private set; }
 
 
-        public PhoneNumber()
-        {
-        }
-
         public static PhoneNumber CreateMobile(int creatorUserID, string number, bool isDefault)
         {
             var phoneNumber = new PhoneNumber

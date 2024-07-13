@@ -5,11 +5,11 @@ namespace Domain.Modules.Shared
 {
     public class Adress : ValueObject
     {
-        public string Details { get; init; }
+        public string Details { get; init; } = string.Empty;
         public bool IsDefault { get; init; }
         public string PostalCode { get; init; }
         public int? CityID { get; init; }
-        public virtual City City { get; init; }
+        public virtual City? City { get; init; }
         public int? CreatorUserID { get; init; }
         public DateTime CreateDate { get; protected set; }
 
@@ -68,7 +68,7 @@ namespace Domain.Modules.Shared
             StringBuilder addressBuilder = new StringBuilder();
             if (CityID.HasValue)
             {
-                addressBuilder.Append(City.Province.Title + " , " + City.Title + ",");
+                addressBuilder.Append(City?.Province.Title + " , " + City?.Title + ",");
             }
             addressBuilder.Append(Details + " , " + PostalCode);
             return addressBuilder.ToString();

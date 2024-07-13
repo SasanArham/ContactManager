@@ -14,10 +14,12 @@ namespace Domain.Modules.ContactManagement.People.Builders
 
         public IPersonBuilder Reset()
         {
-            person = new Person();
-            person.CreateDate = DateTime.Now;
-            person.Deleted = false;
-            person.GuID = Guid.NewGuid().ToString();
+            person = new Person
+            {
+                CreateDate = DateTime.Now,
+                Deleted = false,
+                GuID = Guid.NewGuid().ToString()
+            };
             return this;
         }
 

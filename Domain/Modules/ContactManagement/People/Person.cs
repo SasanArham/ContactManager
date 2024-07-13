@@ -14,11 +14,11 @@ namespace Domain.Modules.ContactManagement.People
         public Gender? Gender { get; set; } = null;
         public int? EducationDegreeID { get; set; }
         public int? MarriageStatusID { get; set; }
-        public virtual Person IntroducerPerson { get; set; }
-        public virtual List<Person> IntroducdPeople { get; set; }
-        public virtual MarriageStatus MarriageStatus { get; set; }
-        public virtual EducationDegree EducationDegree { get; set; }
-        public virtual ICollection<Attachment> Attachments { get; set; }
+        public virtual Person? IntroducerPerson { get; set; }
+        public virtual ICollection<Person> IntroducdPeople { get; set; } = new List<Person>();
+        public virtual MarriageStatus? MarriageStatus { get; set; }
+        public virtual EducationDegree? EducationDegree { get; set; }
+        public virtual ICollection<Attachment> Attachments { get; set; } = new List<Attachment>();
 
         public Person()
         {

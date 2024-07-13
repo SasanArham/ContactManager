@@ -9,8 +9,8 @@ namespace Application.Modules.ContactManagement.People.Commands.AddAttachment
 {
     public class AddAttachmentToPersonCommand : IRequest<string>
     {
-        public int PersonID { get; set; }
-        public IFormFile File { get; set; }
+        public int PersonID { get; init; }
+        public IFormFile File { get; init; }
     }
 
     public class AddAttachmentToPersonCommandHandler : IRequestHandler<AddAttachmentToPersonCommand, string>

@@ -20,7 +20,7 @@ namespace Application.Modules
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Unit> Handle(TestCommand request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(TestCommand request, CancellationToken cancellationToken)
         {
             //Console.WriteLine("******** Publishing the messge");
             //await _publishEndpoint.Publish(new TestMessage { Message = "Hello sasan" });
