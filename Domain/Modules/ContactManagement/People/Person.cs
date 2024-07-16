@@ -46,7 +46,7 @@ namespace Domain.Modules.ContactManagement.People
         public Attachment? FindAttachmentByID(string attachmentID) => Attachments.FirstOrDefault(c => c.Id == attachmentID);
 
 
-        public List<Adress> Addresses { get; set; } = new();
+        public virtual List<Adress> Addresses { get; set; } = new();
         public void AddAddress(int creatorUserID, int? cityID, string address, string postalCode)
         {
             bool mustBeDefAddress = !Addresses.Any();
@@ -68,7 +68,7 @@ namespace Domain.Modules.ContactManagement.People
         }
 
 
-        public List<PhoneNumber> PhoneNumbers { get; set; } = new();
+        public virtual List<PhoneNumber> PhoneNumbers { get; set; } = new();
         public virtual void AddPhoneNumber(int creatorUserID, string number)
         {
             bool mustBeDefault = !PhoneNumbers.Any();
