@@ -109,8 +109,8 @@ namespace Infrastructure.Base
 
             services.Configure<AzureStorageConfigs>((config) =>
             {
-                config.DefaultContainer = configuration["AzureStorageConfigs:DefaultContainer"]!;
-                config.AccountName = configuration["AzureStorageConfigs:AccountName"]!;
+                config.DefaultContainer = Environment.GetEnvironmentVariable("AZURE_STORAGE_DEFAULT_CONTAINER") ?? configuration["AzureStorageConfigs:DefaultContainer"]!;
+                config.AccountName = Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT_NAME") ?? configuration["AzureStorageConfigs:AccountName"]!;
             });
 
             return services;

@@ -17,6 +17,12 @@ services:
       - CACHE_DATABASE_SERVER=redis
       - CACHE_SERVER_PORT=6379
       - EVENT_BUS_HOST_ADDRESS=amqp://guest:guest@rabbitmq:5672
+      - ASPNETCORE_ENVIRONMENT=Development
+      - AZURE_CLIENT_ID=YourOwnAzureClientID
+      - AZURE_TENANT_ID=YourOwnAzureTenantID
+      - AZURE_CLIENT_SECRET=YourOwnAzureSecret
+      - AZURE_STORAGE_DEFAULT_CONTAINER=YourOwnAzureAccountName
+      - AZURE_STORAGE_DEFAULT_CONTAINER=contact-manager-container
 
   redis:
     image: redis:latest
