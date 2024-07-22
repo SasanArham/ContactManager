@@ -23,6 +23,7 @@ services:
       - AZURE_CLIENT_SECRET=YourOwnAzureSecret
       - AZURE_STORAGE_DEFAULT_CONTAINER=YourOwnAzureAccountName
       - AZURE_STORAGE_DEFAULT_CONTAINER=contact-manager-container
+      - Key_Vault_Url=YourOwnAzureVaultUrl
 
   redis:
     image: redis:latest
@@ -43,4 +44,4 @@ services:
     image: rabbitmq:latest
     ports:
       - "5672:5672"
-      - "15672:15672" # you houd run this command on rabbimq teminal to be able to use management panl in browser: rabbitmq-plugins enable rabbitmq_management
+      - "15672:15672" # you should run this command on rabbimq treminal to be able to use management panel in browser: rabbitmq-plugins enable rabbitmq_management

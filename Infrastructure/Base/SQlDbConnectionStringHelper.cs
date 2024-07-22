@@ -21,17 +21,17 @@ namespace Infrastructure.Base
             // ToDo : Can we do this with "Chain of responsiblities" design pattern?
             string connectionString;
 
-            //connectionString = GetFromAzureKeyVault(configuration);
-            //if (!string.IsNullOrEmpty(connectionString))
-            //{
-            //    return connectionString;
-            //}
+            connectionString = GetFromAzureKeyVault(configuration);
+            if (!string.IsNullOrEmpty(connectionString))
+            {
+                return connectionString;
+            }
 
-            //connectionString = GetFromEnviromentVariables();
-            //if (!string.IsNullOrEmpty(connectionString))
-            //{
-            //    return connectionString;
-            //}
+            connectionString = GetFromEnviromentVariables();
+            if (!string.IsNullOrEmpty(connectionString))
+            {
+                return connectionString;
+            }
 
             connectionString = GetFromAppSettings(configuration);
             if (!string.IsNullOrEmpty(connectionString))
