@@ -1,6 +1,10 @@
 ## Overview
 
-Welcome to this learning repository! This project is a .NET 8 Web API designed using Clean Architecture principles. It aims to demonstrate best practices and tools in various areas of modern web development. Please note that this project is intended for learning purposes only and should not be considered a production-ready solution.
+Welcome to this learning repository! This project is a .NET 8 Web API designed using Clean Architecture principles. It aims to demonstrate best practices and tools in various areas of modern web development.
+
+Our secondary goal is to progressively evolve this project into a cloud-native application using Azure. Therefore, having a fundamental understanding of Azure services and an active Azure subscription is essential.
+
+Please note that this project is intended for learning purposes only and should not be considered a production-ready solution.
 
 ## Table of Contents
 
